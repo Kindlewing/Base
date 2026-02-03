@@ -1,2 +1,2 @@
-# Base_C
+# Base
 A handmade library for use instead of libc
