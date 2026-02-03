@@ -35,7 +35,7 @@ string8 string8_read_file(arena *a, int fd, i64 size) {
 	contents.data = arena_push_array(a, u8, size);
 	ssize_t bytes_read = read(fd, contents.data, size);
 	if(bytes_read < 0) {
-		perror("Failed to read shader file");
+		perror("Failed to read file");
 		exit(-1);
 	}
 	contents.length = bytes_read;
