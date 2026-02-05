@@ -63,9 +63,14 @@ static inline void *scratch_arena_push_zero(arena_scratch *s, u64 size) {
 
 #define arena_push_struct_zero(a, type) ((type *)arena_push_zero(a, sizeof(type)))
 
-#define scratch_push(scratch, size) scratch_arena_push(&(scratch), (size))
-#define scratch_push_aligned(scratch, size, align)                                       \
-	scratch_arena_push_aligned(&(scratch), (size), (align))
-#define scratch_push_zero(scratch, size) scratch_arena_push_zero(&(scratch), (size))
+#define scratch_push_struct(scratch, type)                                               \
+	((type *)scratch_arena_push_aligned((scratch), sizeof(type), DEFAULT_ALIGNMENT))
+
+#define scratch_push_array(scratch, type, count)                                         \
+	((type *)scratch_arena_push_aligned((scratch), sizeof(type) * (count),               \
+										DEFAULT_ALIGNMENT))
+
+#define scratch_push_struct_zero(scratch, type)                                          \
+	((type *)scratch_arena_push_zero((scratch), sizeof(type)))
 
 #endif // ARENA_H
