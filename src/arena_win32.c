@@ -4,7 +4,9 @@
 #include <windows.h>
 #endif
 
-static inline b8 is_power_of_two(usize x) { return x && ((x & (x - 1)) == 0); }
+static inline b8 is_power_of_two(usize x) {
+	return x && ((x & (x - 1)) == 0);
+}
 
 static inline usize align_forward_usize(usize offset, usize align) {
 	assert(is_power_of_two(align));
@@ -13,10 +15,10 @@ static inline usize align_forward_usize(usize offset, usize align) {
 }
 
 arena *arena_create(u64 capacity) {
-	arena *arena =
-			VirtualAlloc(NULL, sizeof *arena + capacity, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+	arena *arena = VirtualAlloc(NULL, sizeof *arena + capacity, MEM_RESERVE | MEM_COMMIT,
+								PAGE_READWRITE);
 
-	if (!arena) {
+	if(!arena) {
 		return NULL;
 	}
 
@@ -33,7 +35,7 @@ void *arena_push(arena *arena, u64 size) {
 void *arena_push_aligned(arena *arena, u64 size, size_t align) {
 	usize aligned_offset = align_forward_usize(arena->offset, align);
 
-	if (aligned_offset + size > arena->capacity) {
+	if(aligned_offset + size > arena->capacity) {
 		return NULL;
 	}
 	void *result = arena->base + aligned_offset;
@@ -44,7 +46,7 @@ void *arena_push_aligned(arena *arena, u64 size, size_t align) {
 void *arena_push_zero(arena *arena, u64 size) {
 	void *ptr = arena_push(arena, size);
 
-	if (!ptr)
+	if(!ptr)
 		return NULL;
 
 	u8 *p = (u8 *)ptr;
@@ -52,6 +54,10 @@ void *arena_push_zero(arena *arena, u64 size) {
 	return ptr;
 }
 
-void arena_clear(arena *arena) { arena->offset = 0; }
+void arena_clear(arena *arena) {
+	arena->offset = 0;
+}
 
-void arena_free(arena *arena) { VirtualFree(arena, 0, MEM_RELEASE); }
+void arena_free(arena *arena) {
+	VirtualFree(arena, 0, MEM_RELEASE);
+}
