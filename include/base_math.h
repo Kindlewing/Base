@@ -10,7 +10,7 @@
 #define DEG2RAD 0.01745329251994329577f // PI/180
 #define RAD2DEG 57.2957795130823208768f // 180/PI
 
-typedef struct vector2f32 {
+typedef struct vector2f32_t {
   f32 x;
   f32 y;
 } vector2f32;
