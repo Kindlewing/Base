@@ -38,20 +38,20 @@ static inline arena_scratch arena_scratch_begin(arena *parent) {
 	return scratch;
 }
 
-static inline void arena_scratch_end(arena_scratch *scratch) {
+static inline void scratch_end(arena_scratch *scratch) {
 	scratch->parent->offset = scratch->saved_offset;
 }
 
-static inline void *scratch_arena_push(arena_scratch *scratch, u64 size) {
+static inline void *scratch_push(arena_scratch *scratch, u64 size) {
 	void *result = arena_push(scratch->parent, size);
 	return result;
 }
 
-static inline void *scratch_arena_push_aligned(arena_scratch *s, u64 size, size_t align) {
+static inline void *scratch_push_aligned(arena_scratch *s, u64 size, size_t align) {
 	return arena_push_aligned(s->parent, size, align);
 }
 
-static inline void *scratch_arena_push_zero(arena_scratch *s, u64 size) {
+static inline void *scratch_push_zero(arena_scratch *s, u64 size) {
 	return arena_push_zero(s->parent, size);
 }
 
@@ -64,13 +64,12 @@ static inline void *scratch_arena_push_zero(arena_scratch *s, u64 size) {
 #define arena_push_struct_zero(a, type) ((type *)arena_push_zero(a, sizeof(type)))
 
 #define scratch_push_struct(scratch, type)                                               \
-	((type *)scratch_arena_push_aligned((scratch), sizeof(type), DEFAULT_ALIGNMENT))
+	((type *)scratch_push_aligned((scratch), sizeof(type), DEFAULT_ALIGNMENT))
 
 #define scratch_push_array(scratch, type, count)                                         \
-	((type *)scratch_arena_push_aligned((scratch), sizeof(type) * (count),               \
-										DEFAULT_ALIGNMENT))
+	((type *)scratch_push_aligned((scratch), sizeof(type) * (count), DEFAULT_ALIGNMENT))
 
 #define scratch_push_struct_zero(scratch, type)                                          \
-	((type *)scratch_arena_push_zero((scratch), sizeof(type)))
+	((type *)scratch_push_zero((scratch), sizeof(type)))
 
 #endif // ARENA_H
