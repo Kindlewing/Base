@@ -1,9 +1,11 @@
 #ifndef TYPEDEFS_H
 #define TYPEDEFS_H
 
-#define STATIC_ASSERT(cond, name) typedef char static_assert_##name[(cond) ? 1 : -1]
+#include <stddef.h>
 #define true ((b8)1)
 #define false ((b8)0)
+
+#define STATIC_ASSERT(cond, name) typedef char static_assert_##name[(cond) ? 1 : -1]
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -18,8 +20,8 @@ typedef signed long long i64;
 typedef float f32;
 typedef double f64;
 
-typedef unsigned long long usize;
-typedef signed long long isize;
+typedef size_t usize;
+typedef ptrdiff_t isize;
 
 typedef u8 b8;
 typedef u16 b16;
