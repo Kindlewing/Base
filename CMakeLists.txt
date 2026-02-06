@@ -30,6 +30,12 @@ target_sources(Base
 			include/typedefs.h
 )
 
+target_compile_options(
+	Base
+	PRIVATE
+	$<$<CONFIG:Debug>:-Wall -Wextra -g -O0>
+)
+
 if(WIN32)
 	target_sources(Base PRIVATE src/arena_win32.c)
 elseif(UNIX AND NOT APPLE)
