@@ -17,10 +17,10 @@ typedef struct arena_t {
 
 } arena;
 
-typedef struct arena_scratch_t {
+typedef struct scratch_arena_t {
 	arena *parent;
 	usize saved_offset;
-} arena_scratch;
+} scratch_arena;
 
 arena *arena_create(u64 capacity);
 void arena_clear(arena *arena);
@@ -30,11 +30,11 @@ void *arena_push(arena *arena, u64 size);
 void *arena_push_aligned(arena *arena, u64 size, size_t align);
 void *arena_push_zero(arena *arena, u64 size);
 
-arena_scratch scratch_begin(arena *parent);
-void scratch_end(arena_scratch *scratch);
-void *scratch_push(arena_scratch *scratch, u64 size);
-inline void *scratch_push_aligned(arena_scratch *s, u64 size, size_t align);
-inline void *scratch_push_zero(arena_scratch *s, u64 size);
+scratch_arena scratch_begin(arena *parent);
+void scratch_end(scratch_arena *scratch);
+void *scratch_push(scratch_arena *scratch, u64 size);
+void *scratch_push_aligned(scratch_arena *s, u64 size, size_t align);
+void *scratch_push_zero(scratch_arena *s, u64 size);
 
 #define arena_push_struct(a, type)                                                       \
 	((type *)arena_push_aligned((a), sizeof(type), DEFAULT_ALIGNMENT))

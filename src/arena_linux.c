@@ -51,27 +51,27 @@ void *arena_push_zero(arena *arena, u64 size) {
 	return ptr;
 }
 
-arena_scratch scratch_begin(arena *parent) {
-	arena_scratch scratch;
+scratch_arena scratch_begin(arena *parent) {
+	scratch_arena scratch;
 	scratch.parent = parent;
 	scratch.saved_offset = parent->offset;
 	return scratch;
 }
 
-void scratch_end(arena_scratch *scratch) {
+void scratch_end(scratch_arena *scratch) {
 	scratch->parent->offset = scratch->saved_offset;
 }
 
-void *scratch_push(arena_scratch *scratch, u64 size) {
+void *scratch_push(scratch_arena *scratch, u64 size) {
 	void *result = arena_push(scratch->parent, size);
 	return result;
 }
 
-void *scratch_push_aligned(arena_scratch *s, u64 size, size_t align) {
+void *scratch_push_aligned(scratch_arena *s, u64 size, size_t align) {
 	return arena_push_aligned(s->parent, size, align);
 }
 
-void *scratch_push_zero(arena_scratch *s, u64 size) {
+void *scratch_push_zero(scratch_arena *s, u64 size) {
 	return arena_push_zero(s->parent, size);
 }
 
