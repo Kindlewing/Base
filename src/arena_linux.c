@@ -62,19 +62,6 @@ void scratch_end(scratch_arena *scratch) {
 	scratch->parent->offset = scratch->saved_offset;
 }
 
-void *scratch_push(scratch_arena *scratch, u64 size) {
-	void *result = arena_push(scratch->parent, size);
-	return result;
-}
-
-void *scratch_push_aligned(scratch_arena *s, u64 size, size_t align) {
-	return arena_push_aligned(s->parent, size, align);
-}
-
-void *scratch_push_zero(scratch_arena *s, u64 size) {
-	return arena_push_zero(s->parent, size);
-}
-
 void arena_clear(arena *arena) {
 	arena->offset = 0;
 }

@@ -14,6 +14,7 @@ typedef struct arena_t {
 	u8 *base;
 	u64 capacity;
 	u64 offset;
+	u64 prev_offset; // for temp allocations
 
 } arena;
 
@@ -32,9 +33,6 @@ void *arena_push_zero(arena *arena, u64 size);
 
 scratch_arena scratch_begin(arena *parent);
 void scratch_end(scratch_arena *scratch);
-void *scratch_push(scratch_arena *scratch, u64 size);
-void *scratch_push_aligned(scratch_arena *s, u64 size, size_t align);
-void *scratch_push_zero(scratch_arena *s, u64 size);
 
 #define arena_push_struct(a, type)                                                       \
 	((type *)arena_push_aligned((a), sizeof(type), DEFAULT_ALIGNMENT))
