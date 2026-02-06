@@ -55,7 +55,7 @@ void *arena_push_zero(arena *arena, u64 size) {
 	return ptr;
 }
 
-arena_scratch arena_scratch_begin(arena *parent) {
+arena_scratch scratch_begin(arena *parent) {
 	arena_scratch scratch;
 	scratch.parent = parent;
 	scratch.saved_offset = parent->offset;

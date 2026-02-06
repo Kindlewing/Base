@@ -4,7 +4,6 @@
 #include <assert.h>
 #include <unistd.h>
 #include <sys/mman.h>
-#include "macros.h"
 #include "typedefs.h"
 
 #ifndef DEFAULT_ALIGNMENT
@@ -31,7 +30,7 @@ void *arena_push(arena *arena, u64 size);
 void *arena_push_aligned(arena *arena, u64 size, size_t align);
 void *arena_push_zero(arena *arena, u64 size);
 
-arena_scratch arena_scratch_begin(arena *parent);
+arena_scratch scratch_begin(arena *parent);
 void scratch_end(arena_scratch *scratch);
 void *scratch_push(arena_scratch *scratch, u64 size);
 inline void *scratch_push_aligned(arena_scratch *s, u64 size, size_t align);
