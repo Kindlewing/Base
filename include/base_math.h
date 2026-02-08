@@ -11,18 +11,18 @@
 #define RAD2DEG 57.2957795130823208768f // 180/PI
 
 typedef struct vector2f32_t {
-  f32 x;
-  f32 y;
+	f32 x;
+	f32 y;
 } vector2f32;
 
 static inline f32 base_sqrtf32(f32 x) {
-  __m128 t = _mm_set_ss(x);
-  t = _mm_sqrt_ss(t);
-  return _mm_cvtss_f32(t);
+	__m128 t = _mm_set_ss(x);
+	t = _mm_sqrt_ss(t);
+	return _mm_cvtss_f32(t);
 }
 
 static inline f32 base_vec2f32_magnitude(vector2f32 x) {
-  return base_sqrtf32(x.x * x.x + x.y * x.y);
+	return base_sqrtf32(x.x * x.x + x.y * x.y);
 }
 
 #endif
