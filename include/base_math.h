@@ -15,14 +15,28 @@ typedef struct vector2f32_t {
 	f32 y;
 } vector2f32;
 
-static inline f32 base_sqrtf32(f32 x) {
+static inline f32 sqrtf32(f32 x) {
 	__m128 t = _mm_set_ss(x);
 	t = _mm_sqrt_ss(t);
 	return _mm_cvtss_f32(t);
 }
 
-static inline f32 base_vec2f32_magnitude(vector2f32 x) {
-	return base_sqrtf32(x.x * x.x + x.y * x.y);
+static inline vector2f32 vector2f32_create(f32 x, f32 y) {
+	return (vector2f32){x, y};
 }
 
+static inline f32 vec2f32_magnitude(vector2f32 x) {
+	return sqrtf32(x.x * x.x + x.y * x.y);
+}
+
+static inline vector2f32 vector2f32_scaler_multiply(vector2f32 v, f32 s) {
+	return (vector2f32){.x = s * v.x, .y = s * v.y};
+}
+
+static inline vector2f32 vector2f32_scaler_add(vector2f32 v, f32 s) {
+	return (vector2f32){.x = v.x + s, .y = v.y + s};
+}
+static inline vector2f32 vector2f32_scaler_divide(vector2f32 v, f32 s) {
+	return (vector2f32){.x = v.x / s, .y = v.y / s};
+}
 #endif
