@@ -2,13 +2,14 @@
 #define BASE_MATH_H
 
 #include "typedefs.h"
+#include <assert.h>
 #include <immintrin.h>
 
-#define PI 3.14159265358979323846f
-#define TWO_PI 6.28318530717958647692f
-#define HALF_PI 1.57079632679489661923f
-#define DEG2RAD 0.01745329251994329577f // PI/180
-#define RAD2DEG 57.2957795130823208768f // 180/PI
+#define BASE_PI 3.14159265358979323846f
+#define BASE_TWO_PI 6.28318530717958647692f
+#define BASE_HALF_PI 1.57079632679489661923f
+#define BASE_DEG2RAD 0.01745329251994329577f // PI/180
+#define BASE_RAD2DEG 57.2957795130823208768f // 180/PI
 
 typedef struct vector2f32_t {
 	f32 x;
@@ -25,18 +26,25 @@ static inline vector2f32 vector2f32_create(f32 x, f32 y) {
 	return (vector2f32){x, y};
 }
 
-static inline f32 vec2f32_magnitude(vector2f32 x) {
+static inline f32 vector2f32_magnitude(vector2f32 x) {
 	return sqrtf32(x.x * x.x + x.y * x.y);
 }
 
-static inline vector2f32 vector2f32_scaler_multiply(vector2f32 v, f32 s) {
+static inline vector2f32 vector2f32_scalar_multiply(vector2f32 v, f32 s) {
 	return (vector2f32){.x = s * v.x, .y = s * v.y};
 }
 
-static inline vector2f32 vector2f32_scaler_add(vector2f32 v, f32 s) {
+static inline vector2f32 vector2f32_scalar_add(vector2f32 v, f32 s) {
 	return (vector2f32){.x = v.x + s, .y = v.y + s};
 }
-static inline vector2f32 vector2f32_scaler_divide(vector2f32 v, f32 s) {
+
+static inline vector2f32 vector2f32_scalar_subtract(vector2f32 v, f32 s) {
+	return (vector2f32){.x = v.x - s, .y = v.y - s};
+}
+
+static inline vector2f32 vector2f32_scalar_divide(vector2f32 v, f32 s) {
+	assert(s != 0.0f);
 	return (vector2f32){.x = v.x / s, .y = v.y / s};
 }
+
 #endif
