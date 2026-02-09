@@ -10,7 +10,7 @@
 #define DEFAULT_ALIGNMENT (2 * sizeof(void *))
 #endif
 
-typedef struct arena_t {
+typedef struct arena {
 	u8 *base;
 	u64 capacity;
 	u64 offset;
