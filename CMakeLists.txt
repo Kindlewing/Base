@@ -17,23 +17,7 @@ target_sources(Base
 		src/base_math.c
 		src/profile.c
 		src/string8.c
-	PUBLIC
-		FILE_SET HEADERS
-		BASE_DIRS
-			include
-		FILES
-			include/arena.h
-			include/base_math.h
-			include/macros.h
-			include/profile.h
-			include/string8.h
-			include/typedefs.h
-)
-
-target_compile_options(
-	Base
-	PRIVATE
-	$<$<CONFIG:Debug>:-Wall -Wextra -g -O0>
+		src/linalg.c
 )
 
 if(WIN32)
@@ -41,3 +25,12 @@ if(WIN32)
 elseif(UNIX AND NOT APPLE)
 	target_sources(Base PRIVATE src/arena_linux.c)
 endif()
+
+target_include_directories(Base PUBLIC include)
+
+target_compile_options(
+	Base
+	PRIVATE
+	$<$<CONFIG:Debug>:-Wall -Wextra -g -O0>
+)
+
