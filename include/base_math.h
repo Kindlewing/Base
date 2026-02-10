@@ -22,6 +22,13 @@ typedef struct vector3f32 {
 	f32 z;
 } vector3f32;
 
+typedef struct vector4f32 {
+	f32 r;
+	f32 g;
+	f32 b;
+	f32 a;
+} vector4f32;
+
 typedef struct mat3x3f32 {
 	f32 m[9]; // idx: col * 3 + row
 } mat3x3f32;
@@ -34,10 +41,6 @@ static inline f32 sqrtf32(f32 x) {
 	__m128 t = _mm_set_ss(x);
 	t = _mm_sqrt_ss(t);
 	return _mm_cvtss_f32(t);
-}
-
-static inline vector2f32 vector2f32_make(f32 x, f32 y) {
-	return (vector2f32){.x = x, .y = y};
 }
 
 static inline f32 vector2f32_mag(vector2f32 x) {
