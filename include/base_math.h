@@ -16,6 +16,12 @@ typedef struct vector2f32 {
 	f32 y;
 } vector2f32;
 
+typedef struct vector3f32 {
+	f32 x;
+	f32 y;
+	f32 z;
+} vector3f32;
+
 typedef struct mat3x3f32 {
 	f32 m[9]; // idx: col * 3 + row
 } mat3x3f32;
