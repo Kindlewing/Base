@@ -118,7 +118,7 @@ void end_profile() {
 
 		f64 self_seconds = (f64)self_time / (f64)cpu_freq;
 		f64 average = (self_seconds / (f64)a->times_hit) * 1000.0;
-		printf("%-30.*s | hits: %6llu | time (self): %8.3f ms | average (self): %8.3f ms",
+		printf("%-30.*s | hits: %6lu | time (self): %8.3f ms | average (self): %8.3f ms",
 			   (int)a->label.length, a->label.data, a->times_hit, self_seconds * 1000.0,
 			   average);
 		if(a->tsc_elapsed_children > 0) {

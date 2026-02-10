@@ -32,7 +32,7 @@ typedef struct mat4x4f32 {
 
 /* CREATION */
 
-vector2f32 vector2f32_make(f32 x, f32 y) {
+static inline vector2f32 vector2f32_make(f32 x, f32 y) {
 	return (vector2f32){.x = x, .y = y};
 }
 
@@ -40,7 +40,7 @@ static inline vector3f32 vector3f32_make(f32 x, f32 y, f32 z) {
 	return (vector3f32){.x = x, .y = y, .z = z};
 }
 
-vector4f32 vector4f32_make(f32 r, f32 g, f32 b, f32 a) {
+static inline vector4f32 vector4f32_make(f32 r, f32 g, f32 b, f32 a) {
 	return (vector4f32){.r = r, .g = g, .b = b, .a = a};
 }
 
