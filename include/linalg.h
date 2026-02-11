@@ -94,12 +94,21 @@ static inline vector2f32 vector2f32_scalar_div(vector2f32 v, f32 s) {
 
 // clang-format off
 static inline mat4x4f32 mat4f32_scale(mat4x4f32 m, vector3f32 v) {
-	return (mat4x4f32){.m = {
-		v.x,  0.0f, 0.0f, 0.0f,
-		0.0f, v.y,  0.0f, 0.0f,
-		0.0f, 0.0f, v.z,  0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f
-	}};
+	MAT4_IDX(m, 0, 0) *= v.x;
+	MAT4_IDX(m, 1, 0) *= v.x;
+	MAT4_IDX(m, 2, 0) *= v.x;
+	MAT4_IDX(m, 3, 0) *= v.x;
+
+	MAT4_IDX(m, 0, 1) *= v.y;
+	MAT4_IDX(m, 1, 1) *= v.y;
+	MAT4_IDX(m, 2, 1) *= v.y;
+	MAT4_IDX(m, 3, 1) *= v.y;
+
+	MAT4_IDX(m, 0, 2) *= v.z;
+	MAT4_IDX(m, 1, 2) *= v.z;
+	MAT4_IDX(m, 2, 2) *= v.z;
+	MAT4_IDX(m, 3, 2) *= v.z;
+	return m;
 }
 // clang-format on
 
