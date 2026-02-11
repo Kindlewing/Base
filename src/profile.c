@@ -1,5 +1,6 @@
 #include "profile.h"
 #include "typedefs.h"
+#include <fcntl.h>
 #include <stdio.h>
 
 static profiler global_prof;
@@ -105,27 +106,49 @@ void end_profile() {
 	if(cpu_freq == 0) {
 		return;
 	}
+
 	u64 total_cycles = global_prof.end_tsc - global_prof.start_tsc;
 	f64 total_seconds = (f64)total_cycles / (f64)cpu_freq;
-	printf("Total time: %.3f ms\n\n", total_seconds * 1000.0);
 
+	char buffer[1024];
+
+	int len = snprintf(buffer, sizeof(buffer), "Total time: %.3f ms\n\n",
+					   total_seconds * 1000.0);
+	write(1, buffer, len);
+
+	int fd = open("profile_log.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if(fd < 0) {
+		perror("open");
+		return;
+	}
+	write(fd, buffer, len);
 	for(u32 i = 0; i < PROFILE_MAX_ANCHORS; ++i) {
 		profile_anchor *a = &global_prof.anchors[i];
-		u64 self_time = a->tsc_elapsed - a->tsc_elapsed_children;
-		if(a->times_hit == 0) {
+		if(a->times_hit == 0)
 			continue;
+
+		u64 self_time = a->tsc_elapsed - a->tsc_elapsed_children;
+		f64 self_seconds = (f64)self_time / (f64)cpu_freq;
+		f64 avg_ms = (self_seconds / (f64)a->times_hit) * 1000.0;
+
+		int line_len;
+		if(a->tsc_elapsed_children > 0) {
+			f64 with_children_ms = (f64)a->tsc_elapsed / (f64)cpu_freq * 1000.0;
+			line_len = snprintf(buffer, sizeof(buffer),
+								"%.*s | hits: %6lu | time (self): %8.3f ms | average "
+								"(self): %8.3f ms | with children: %8.3f ms\n",
+								(int)a->label.length, a->label.data, a->times_hit,
+								self_seconds * 1000.0, avg_ms, with_children_ms);
+		} else {
+			line_len = snprintf(buffer, sizeof(buffer),
+								"%.*s | hits: %6lu | time (self): %8.3f ms | average "
+								"(self): %8.3f ms\n",
+								(int)a->label.length, a->label.data, a->times_hit,
+								self_seconds * 1000.0, avg_ms);
 		}
 
-		f64 self_seconds = (f64)self_time / (f64)cpu_freq;
-		f64 average = (self_seconds / (f64)a->times_hit) * 1000.0;
-		printf("%-30.*s | hits: %6lu | time (self): %8.3f ms | average (self): %8.3f ms",
-			   (int)a->label.length, a->label.data, a->times_hit, self_seconds * 1000.0,
-			   average);
-		if(a->tsc_elapsed_children > 0) {
-			f64 seconds_with_children = (f64)a->tsc_elapsed / (f64)cpu_freq;
-			printf(" | with children: %8.3f ms\n", seconds_with_children * 1000.0);
-		} else {
-			printf("\n");
-		}
+		write(1, buffer, line_len);
+		write(fd, buffer, line_len);
 	}
+	close(fd);
 }
