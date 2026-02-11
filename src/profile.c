@@ -7,6 +7,8 @@ static profiler global_prof;
 static u32 global_parent_idx;
 static u32 global_anchor_count;
 
+static u64 estimate_cpu_timer_freq(void);
+
 #if _WIN32
 #include <intrin.h>
 #include <windows.h>
@@ -38,8 +40,6 @@ static u64 read_os_timer(void) {
 	return res;
 }
 
-#endif
-
 static void print_profile() {
 	global_prof.end_tsc = __rdtsc();
 	u64 cpu_freq = estimate_cpu_timer_freq();
@@ -59,7 +59,7 @@ static void print_profile() {
 
 		f64 self_seconds = (f64)self_time / (f64)cpu_freq;
 		f64 average = (self_seconds / (f64)a->times_hit) * 1000.0;
-		printf("%-30.*s | hits: %6llu | time (self): %8.3f ms | average (self): %8.3f ms",
+		printf("%-30.*s | hits: %6lu | time (self): %8.3f ms | average (self): %8.3f ms",
 			   (int)a->label.length, a->label.data, a->times_hit, self_seconds * 1000.0,
 			   average);
 		if(a->tsc_elapsed_children > 0) {
@@ -131,20 +131,7 @@ static void log_profile() {
 	close(fd); // close file
 }
 
-u32 profile_get_anchor(string8 label) {
-	for(u32 i = 0; i < global_anchor_count; ++i) {
-		if(string8_eq(&global_prof.anchors[i].label, &label))
-			return i;
-	}
-
-	u32 idx = global_anchor_count++;
-	global_prof.anchors[idx].label = label;
-	return idx;
-}
-
-void begin_profile() {
-	global_prof.start_tsc = __rdtsc();
-}
+#endif
 
 static u64 estimate_cpu_timer_freq(void) {
 	u64 ms_to_wait = 100;
@@ -164,6 +151,21 @@ static u64 estimate_cpu_timer_freq(void) {
 		cpu_freq = os_freq * cpu_elapsed / os_elapsed;
 	}
 	return cpu_freq;
+}
+
+u32 profile_get_anchor(string8 label) {
+	for(u32 i = 0; i < global_anchor_count; ++i) {
+		if(string8_eq(&global_prof.anchors[i].label, &label))
+			return i;
+	}
+
+	u32 idx = global_anchor_count++;
+	global_prof.anchors[idx].label = label;
+	return idx;
+}
+
+void begin_profile() {
+	global_prof.start_tsc = __rdtsc();
 }
 
 void init_profile_block(profile_block *block, string8 name) {
