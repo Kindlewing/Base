@@ -49,26 +49,26 @@ static inline vector4f32 vector4f32_make(f32 r, f32 g, f32 b, f32 a) {
 	return (vector4f32){.r = r, .g = g, .b = b, .a = a};
 }
 
+// clang-format off
 static inline mat3x3f32 mat3f32_identity() {
-	// clang-format off
 	return (mat3x3f32){.m = {
-		1, 0, 0,
-		0, 1, 0,
-		0, 0, 1
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f
 	}};
-	// clang-format on
 }
+// clang-format on
 
+// clang-format off
 static inline mat4x4f32 mat4f32_identity() {
-	// clang-format off
 	return (mat4x4f32){.m = {
-		1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f
 	}};
-	// clang-format on
 }
+// clang-format on
 
 /* OPERATIONS */
 static inline f32 vector2f32_mag(vector2f32 x) {
@@ -91,5 +91,16 @@ static inline vector2f32 vector2f32_scalar_div(vector2f32 v, f32 s) {
 	assert(s != 0.0f);
 	return (vector2f32){.x = v.x / s, .y = v.y / s};
 }
+
+// clang-format off
+static inline mat4x4f32 mat4f32_scale(mat4x4f32 m, vector3f32 v) {
+	return (mat4x4f32){.m = {
+		v.x,  0.0f, 0.0f, 0.0f,
+		0.0f, v.y,  0.0f, 0.0f,
+		0.0f, 0.0f, v.z,  0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f
+	}};
+}
+// clang-format on
 
 #endif
