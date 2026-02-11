@@ -40,6 +40,97 @@ static u64 read_os_timer(void) {
 
 #endif
 
+static void print_profile() {
+	global_prof.end_tsc = __rdtsc();
+	u64 cpu_freq = estimate_cpu_timer_freq();
+	if(cpu_freq == 0) {
+		return;
+	}
+	u64 total_cycles = global_prof.end_tsc - global_prof.start_tsc;
+	f64 total_seconds = (f64)total_cycles / (f64)cpu_freq;
+	printf("Total time: %.3f ms\n\n", total_seconds * 1000.0);
+
+	for(u32 i = 0; i < PROFILE_MAX_ANCHORS; ++i) {
+		profile_anchor *a = &global_prof.anchors[i];
+		u64 self_time = a->tsc_elapsed - a->tsc_elapsed_children;
+		if(a->times_hit == 0) {
+			continue;
+		}
+
+		f64 self_seconds = (f64)self_time / (f64)cpu_freq;
+		f64 average = (self_seconds / (f64)a->times_hit) * 1000.0;
+		printf("%-30.*s | hits: %6llu | time (self): %8.3f ms | average (self): %8.3f ms",
+			   (int)a->label.length, a->label.data, a->times_hit, self_seconds * 1000.0,
+			   average);
+		if(a->tsc_elapsed_children > 0) {
+			f64 seconds_with_children = (f64)a->tsc_elapsed / (f64)cpu_freq;
+			printf(" | with children: %8.3f ms\n", seconds_with_children * 1000.0);
+		} else {
+			printf("\n");
+		}
+	}
+}
+
+static void log_profile() {
+	global_prof.end_tsc = __rdtsc();
+	u64 cpu_freq = estimate_cpu_timer_freq();
+	if(cpu_freq == 0) {
+		return;
+	}
+
+	u64 total_cycles = global_prof.end_tsc - global_prof.start_tsc;
+	f64 total_seconds = (f64)total_cycles / (f64)cpu_freq;
+
+	char buffer[1024];
+
+	// Print total time to stdout
+	int len = snprintf(buffer, sizeof(buffer), "Total time: %.3f ms\n\n",
+					   total_seconds * 1000.0);
+	write(1, buffer, len);
+
+	// Open log file
+	int fd = open("profile_log.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if(fd < 0) {
+		perror("open");
+		return;
+	}
+
+	// Write total time to file
+	write(fd, buffer, len);
+
+	// Write per-anchor profiling data
+	for(u32 i = 0; i < PROFILE_MAX_ANCHORS; ++i) {
+		profile_anchor *a = &global_prof.anchors[i];
+		if(a->times_hit == 0)
+			continue;
+
+		u64 self_time = a->tsc_elapsed - a->tsc_elapsed_children;
+		f64 self_seconds = (f64)self_time / (f64)cpu_freq;
+		f64 avg_ms = (self_seconds / (f64)a->times_hit) * 1000.0;
+
+		int line_len;
+		if(a->tsc_elapsed_children > 0) {
+			f64 with_children_ms = (f64)a->tsc_elapsed / (f64)cpu_freq * 1000.0;
+			line_len = snprintf(buffer, sizeof(buffer),
+								"%.*s | hits: %6lu | time (self): %8.3f ms | average "
+								"(self): %8.3f ms | with children: %8.3f ms\n",
+								(int)a->label.length, a->label.data, a->times_hit,
+								self_seconds * 1000.0, avg_ms, with_children_ms);
+		} else {
+			line_len = snprintf(buffer, sizeof(buffer),
+								"%.*s | hits: %6lu | time (self): %8.3f ms | average "
+								"(self): %8.3f ms\n",
+								(int)a->label.length, a->label.data, a->times_hit,
+								self_seconds * 1000.0, avg_ms);
+		}
+
+		write(1, buffer, line_len);	 // also to stdout
+		write(fd, buffer, line_len); // to file
+	}
+
+	close(fd); // close file
+}
+
 u32 profile_get_anchor(string8 label) {
 	for(u32 i = 0; i < global_anchor_count; ++i) {
 		if(string8_eq(&global_prof.anchors[i].label, &label))
@@ -100,55 +191,10 @@ void destroy_profile_block(profile_block *block) {
 	a->times_hit += 1;
 }
 
-void end_profile() {
-	global_prof.end_tsc = __rdtsc();
-	u64 cpu_freq = estimate_cpu_timer_freq();
-	if(cpu_freq == 0) {
+void end_profile(b8 gfx) {
+	if(gfx) {
+		log_profile();
 		return;
 	}
-
-	u64 total_cycles = global_prof.end_tsc - global_prof.start_tsc;
-	f64 total_seconds = (f64)total_cycles / (f64)cpu_freq;
-
-	char buffer[1024];
-
-	int len = snprintf(buffer, sizeof(buffer), "Total time: %.3f ms\n\n",
-					   total_seconds * 1000.0);
-	write(1, buffer, len);
-
-	int fd = open("profile_log.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if(fd < 0) {
-		perror("open");
-		return;
-	}
-	write(fd, buffer, len);
-	for(u32 i = 0; i < PROFILE_MAX_ANCHORS; ++i) {
-		profile_anchor *a = &global_prof.anchors[i];
-		if(a->times_hit == 0)
-			continue;
-
-		u64 self_time = a->tsc_elapsed - a->tsc_elapsed_children;
-		f64 self_seconds = (f64)self_time / (f64)cpu_freq;
-		f64 avg_ms = (self_seconds / (f64)a->times_hit) * 1000.0;
-
-		int line_len;
-		if(a->tsc_elapsed_children > 0) {
-			f64 with_children_ms = (f64)a->tsc_elapsed / (f64)cpu_freq * 1000.0;
-			line_len = snprintf(buffer, sizeof(buffer),
-								"%.*s | hits: %6lu | time (self): %8.3f ms | average "
-								"(self): %8.3f ms | with children: %8.3f ms\n",
-								(int)a->label.length, a->label.data, a->times_hit,
-								self_seconds * 1000.0, avg_ms, with_children_ms);
-		} else {
-			line_len = snprintf(buffer, sizeof(buffer),
-								"%.*s | hits: %6lu | time (self): %8.3f ms | average "
-								"(self): %8.3f ms\n",
-								(int)a->label.length, a->label.data, a->times_hit,
-								self_seconds * 1000.0, avg_ms);
-		}
-
-		write(1, buffer, line_len);
-		write(fd, buffer, line_len);
-	}
-	close(fd);
+	print_profile();
 }

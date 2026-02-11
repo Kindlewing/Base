@@ -40,5 +40,5 @@ typedef struct {
 void begin_profile(void);
 void init_profile_block(profile_block *block, string8 name);
 void destroy_profile_block(profile_block *block);
-void end_profile(void);
+void end_profile(b8 gfx);
 #endif
