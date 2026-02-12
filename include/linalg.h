@@ -146,6 +146,12 @@ static inline mat4x4f32 mat4f32_scale(mat4x4f32 m, vector3f32 v) {
 }
 
 
+static inline mat4x4f32 mat4f32_translate(mat4x4f32 m, vector3f32 v) {
+    MAT4_IDX(m, 0, 3) += v.x;
+    MAT4_IDX(m, 1, 3) += v.y;
+    MAT4_IDX(m, 2, 3) += v.z;
+    return m;
+}
 
 static inline mat4x4f32 mat4f32_rotate(mat4x4f32 m, vector3f32 a, f32 theta) {
     a = vector3f32_norm(a);
