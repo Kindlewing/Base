@@ -17,7 +17,6 @@ target_sources(Base
 		src/base_math.c
 		src/profile.c
 		src/string8.c
-		src/linalg.c
 )
 
 if(WIN32)
