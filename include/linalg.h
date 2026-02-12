@@ -6,9 +6,9 @@
 #include <math.h>
 
 // matrix3 index
-#define MAT3_IDX(m, r, c) ((m).m[(c) * 3 + (r)])
+#define MAT3_IDX(mat, r, c) ((mat).m[(c) * 3 + (r)])
 // matrix4 index
-#define MAT4_IDX(m, r, c) ((m).m[(c) * 4 + (r)])
+#define MAT4_IDX(mat, r, c) ((mat).m[(c) * 4 + (r)])
 
 typedef struct vector2f32 {
 	f32 x;
