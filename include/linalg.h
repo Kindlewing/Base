@@ -178,6 +178,26 @@ static inline mat4x4f32 mat4f32_rotate(mat4x4f32 m, vector3f32 a, f32 theta) {
     return m;
 }
 
+static inline mat4x4f32 mat4f32_ortho(
+    f32 left, f32 right,
+    f32 bottom, f32 top,
+    f32 near, f32 far)
+{
+    mat4x4f32 m = {0};
+
+    MAT4_IDX(m,0,0) =  2.0f / (right - left);
+    MAT4_IDX(m,1,1) =  2.0f / (top - bottom);
+    MAT4_IDX(m,2,2) = -2.0f / (far - near);
+
+    MAT4_IDX(m,0,3) = -(right + left)   / (right - left);
+    MAT4_IDX(m,1,3) = -(top + bottom)   / (top - bottom);
+    MAT4_IDX(m,2,3) = -(far + near)     / (far - near);
+
+    MAT4_IDX(m,3,3) = 1.0f;
+
+    return m;
+}
+
 // clang-format on
 
 #endif
