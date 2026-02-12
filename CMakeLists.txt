@@ -26,6 +26,7 @@ elseif(UNIX AND NOT APPLE)
 endif()
 
 target_include_directories(Base PUBLIC include)
+target_link_libraries(Base PRIVATE m)
 
 target_compile_options(
 	Base
