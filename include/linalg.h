@@ -72,6 +72,10 @@ static inline mat4x4f32 mat4f32_identity() {
 // clang-format on
 
 /* OPERATIONS */
+
+static inline vector2f32 vector2f32_add(vector2f32 a, vector2f32 b) {
+	return vector2f32_make(a.x + b.x, a.y + b.y);
+}
 static inline f32 vector2f32_mag(vector2f32 x) {
 	return base_sqrtf32(x.x * x.x + x.y * x.y);
 }
