@@ -1,4 +1,7 @@
 #include "profile.h"
+
+#ifdef PROFILE_ENABLE
+
 #include "typedefs.h"
 #include <fcntl.h>
 #include <stdio.h>
@@ -201,3 +204,5 @@ void end_profile(b8 gfx) {
 	}
 	print_profile();
 }
+
+#endif
