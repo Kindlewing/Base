@@ -3,7 +3,7 @@
 #include "string8.h"
 #include "typedefs.h"
 
-#define PROFILE_MAX_ANCHORS 4096
+#define PROFILE_MAX_ANCHORS 64
 
 #define begin_time_function begin_time_block(__func__)
 

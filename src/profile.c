@@ -164,7 +164,7 @@ u32 profile_get_anchor(string8 label) {
 	return idx;
 }
 
-void begin_profile() {
+void begin_profile(void) {
 	global_prof.start_tsc = __rdtsc();
 }
 
