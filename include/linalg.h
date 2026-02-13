@@ -209,20 +209,20 @@ static inline mat4x4f32 mat4f32_rotate(mat4x4f32 m, vector3f32 a, f32 theta) {
 
     mat4x4f32 result = m;
 
-    MAT4_IDX(result, 0, 0) = MAT4_IDX(m, 0, 0)*r00 + MAT4_IDX(m, 0, 1)*r10 + MAT4_IDX(m, 0, 2)*r20;
-    MAT4_IDX(result, 1, 0) = MAT4_IDX(m, 1, 0)*r00 + MAT4_IDX(m, 1, 1)*r10 + MAT4_IDX(m, 1, 2)*r20;
-    MAT4_IDX(result, 2, 0) = MAT4_IDX(m, 2, 0)*r00 + MAT4_IDX(m, 2, 1)*r10 + MAT4_IDX(m, 2, 2)*r20;
-    MAT4_IDX(result, 3, 0) = MAT4_IDX(m, 3, 0)*r00 + MAT4_IDX(m, 3, 1)*r10 + MAT4_IDX(m, 3, 2)*r20;
+    MAT4_IDX(result, 0, 0) = MAT4_IDX(m, 0, 0) * r00 + MAT4_IDX(m, 0, 1) * r10 + MAT4_IDX(m, 0, 2) * r20;
+    MAT4_IDX(result, 1, 0) = MAT4_IDX(m, 1, 0) * r00 + MAT4_IDX(m, 1, 1) * r10 + MAT4_IDX(m, 1, 2) * r20;
+    MAT4_IDX(result, 2, 0) = MAT4_IDX(m, 2, 0) * r00 + MAT4_IDX(m, 2, 1) * r10 + MAT4_IDX(m, 2, 2) * r20;
+    MAT4_IDX(result, 3, 0) = MAT4_IDX(m, 3, 0) * r00 + MAT4_IDX(m, 3, 1) * r10 + MAT4_IDX(m, 3, 2) * r20;
 
-    MAT4_IDX(result, 0, 1) = MAT4_IDX(m, 0, 0)*r01 + MAT4_IDX(m, 0, 1)*r11 + MAT4_IDX(m, 0, 2)*r21;
-    MAT4_IDX(result, 1, 1) = MAT4_IDX(m, 1, 0)*r01 + MAT4_IDX(m, 1, 1)*r11 + MAT4_IDX(m, 1, 2)*r21;
-    MAT4_IDX(result, 2, 1) = MAT4_IDX(m, 2, 0)*r01 + MAT4_IDX(m, 2, 1)*r11 + MAT4_IDX(m, 2, 2)*r21;
-    MAT4_IDX(result, 3, 1) = MAT4_IDX(m, 3, 0)*r01 + MAT4_IDX(m, 3, 1)*r11 + MAT4_IDX(m, 3, 2)*r21;
+    MAT4_IDX(result, 0, 1) = MAT4_IDX(m, 0, 0) * r01 + MAT4_IDX(m, 0, 1) * r11 + MAT4_IDX(m, 0, 2) * r21;
+    MAT4_IDX(result, 1, 1) = MAT4_IDX(m, 1, 0) * r01 + MAT4_IDX(m, 1, 1) * r11 + MAT4_IDX(m, 1, 2) * r21;
+    MAT4_IDX(result, 2, 1) = MAT4_IDX(m, 2, 0) * r01 + MAT4_IDX(m, 2, 1) * r11 + MAT4_IDX(m, 2, 2) * r21;
+    MAT4_IDX(result, 3, 1) = MAT4_IDX(m, 3, 0) * r01 + MAT4_IDX(m, 3, 1) * r11 + MAT4_IDX(m, 3, 2) * r21;
 
-    MAT4_IDX(result, 0, 2) = MAT4_IDX(m, 0, 0)*r02 + MAT4_IDX(m, 0, 1)*r12 + MAT4_IDX(m, 0, 2)*r22;
-    MAT4_IDX(result, 1, 2) = MAT4_IDX(m, 1, 0)*r02 + MAT4_IDX(m, 1, 1)*r12 + MAT4_IDX(m, 1, 2)*r22;
-    MAT4_IDX(result, 2, 2) = MAT4_IDX(m, 2, 0)*r02 + MAT4_IDX(m, 2, 1)*r12 + MAT4_IDX(m, 2, 2)*r22;
-    MAT4_IDX(result, 3, 2) = MAT4_IDX(m, 3, 0)*r02 + MAT4_IDX(m, 3, 1)*r12 + MAT4_IDX(m, 3, 2)*r22;
+    MAT4_IDX(result, 0, 2) = MAT4_IDX(m, 0, 0) * r02 + MAT4_IDX(m, 0, 1) * r12 + MAT4_IDX(m, 0, 2) * r22;
+    MAT4_IDX(result, 1, 2) = MAT4_IDX(m, 1, 0) * r02 + MAT4_IDX(m, 1, 1) * r12 + MAT4_IDX(m, 1, 2) * r22;
+    MAT4_IDX(result, 2, 2) = MAT4_IDX(m, 2, 0) * r02 + MAT4_IDX(m, 2, 1) * r12 + MAT4_IDX(m, 2, 2) * r22;
+    MAT4_IDX(result, 3, 2) = MAT4_IDX(m, 3, 0) * r02 + MAT4_IDX(m, 3, 1) * r12 + MAT4_IDX(m, 3, 2) * r22;
 
     return result;
 }
