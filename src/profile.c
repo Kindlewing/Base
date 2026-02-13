@@ -159,6 +159,7 @@ u32 profile_get_anchor(string8 label) {
 			return i;
 	}
 
+	assert(global_anchor_count < PROFILE_MAX_ANCHORS && "Profile anchor overflow");
 	u32 idx = global_anchor_count++;
 	global_prof.anchors[idx].label = label;
 	return idx;
