@@ -177,10 +177,10 @@ static inline mat4x4f32 mat4f32_scale(mat4x4f32 m, vector3f32 v) {
 
 
 static inline mat4x4f32 mat4f32_translate(mat4x4f32 m, vector3f32 v) {
-    MAT4_IDX(m, 0, 3) = MAT4_IDX(m, 0, 0)*v.x + MAT4_IDX(m, 0, 1)*v.y + MAT4_IDX(m, 0, 2)*v.z + MAT4_IDX(m, 0, 3);
-    MAT4_IDX(m, 1, 3) = MAT4_IDX(m, 1, 0)*v.x + MAT4_IDX(m, 1, 1)*v.y + MAT4_IDX(m, 1, 2)*v.z + MAT4_IDX(m, 1, 3);
-    MAT4_IDX(m, 2, 3) = MAT4_IDX(m, 2, 0)*v.x + MAT4_IDX(m, 2, 1)*v.y + MAT4_IDX(m, 2, 2)*v.z + MAT4_IDX(m, 2, 3);
-    MAT4_IDX(m, 3, 3) = MAT4_IDX(m, 3, 0)*v.x + MAT4_IDX(m, 3, 1)*v.y + MAT4_IDX(m, 3, 2)*v.z + MAT4_IDX(m, 3, 3);
+    MAT4_IDX(m, 0, 3) = MAT4_IDX(m, 0, 0) * v.x + MAT4_IDX(m, 0, 1) * v.y + MAT4_IDX(m, 0, 2) * v.z + MAT4_IDX(m, 0, 3);
+    MAT4_IDX(m, 1, 3) = MAT4_IDX(m, 1, 0) * v.x + MAT4_IDX(m, 1, 1) * v.y + MAT4_IDX(m, 1, 2) * v.z + MAT4_IDX(m, 1, 3);
+    MAT4_IDX(m, 2, 3) = MAT4_IDX(m, 2, 0) * v.x + MAT4_IDX(m, 2, 1) * v.y + MAT4_IDX(m, 2, 2) * v.z + MAT4_IDX(m, 2, 3);
+    MAT4_IDX(m, 3, 3) = MAT4_IDX(m, 3, 0) * v.x + MAT4_IDX(m, 3, 1) * v.y + MAT4_IDX(m, 3, 2) * v.z + MAT4_IDX(m, 3, 3);
     return m;
 }
 
