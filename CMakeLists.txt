@@ -26,6 +26,11 @@ elseif(UNIX AND NOT APPLE)
 	target_sources(Base PRIVATE src/arena_linux.c)
 endif()
 
+option(PROFILE_ENABLE "Enable profiling" OFF)
+if(PROFILE_ENABLE)
+	target_compile_definitions(Base PUBLIC PROFILE_ENABLE)
+endif()
+
 target_include_directories(Base PUBLIC include)
 target_link_libraries(Base PRIVATE m)
 

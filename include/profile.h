@@ -3,6 +3,8 @@
 #include "string8.h"
 #include "typedefs.h"
 
+#ifdef PROFILE_ENABLE
+
 #define PROFILE_MAX_ANCHORS 64
 
 #define begin_time_function begin_time_block(__func__)
@@ -41,4 +43,16 @@ void begin_profile(void);
 void init_profile_block(profile_block *block, string8 name);
 void destroy_profile_block(profile_block *block);
 void end_profile(b8 gfx);
+
+#else
+
+#define begin_time_function
+#define end_time_function
+#define begin_time_block(name)
+#define end_time_block
+
+static inline void begin_profile(void) {}
+static inline void end_profile(b8 gfx) { (void)gfx; }
+
+#endif
 #endif
