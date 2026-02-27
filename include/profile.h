@@ -7,10 +7,6 @@
 
 #define PROFILE_MAX_ANCHORS 64
 
-#define begin_time_function begin_time_block(__func__)
-
-#define end_time_function destroy_profile_block(&block)
-
 #define begin_time_block(name)                                                           \
 	profile_block block;                                                                 \
 	do {                                                                                 \
@@ -46,8 +42,6 @@ void end_profile(b8 gfx);
 
 #else
 
-#define begin_time_function
-#define end_time_function
 #define begin_time_block(name)
 #define end_time_block
 
