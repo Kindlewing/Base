@@ -9,9 +9,6 @@ endif()
 add_library(Base STATIC)
 target_compile_features(Base PUBLIC c_std_99)
 
-
-
-
 target_sources(Base
 	PRIVATE
 		src/base_math.c
