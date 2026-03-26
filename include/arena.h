@@ -14,11 +14,10 @@ typedef struct arena {
 	u8 *base;
 	u64 capacity;
 	u64 offset;
-	u64 prev_offset; // for temp allocations
-
+	u64 prev_offset;
 } arena;
 
-typedef struct scratch_arena_t {
+typedef struct scratch_arena {
 	arena *parent;
 	usize saved_offset;
 } scratch_arena;
